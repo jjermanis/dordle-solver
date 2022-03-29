@@ -7,31 +7,54 @@ namespace dordle_solver
     internal class InteractiveGame
     {
         private readonly IList<string> _words;
-        private readonly int _boardCount;
-        private readonly int _maxGuesses;
 
         public InteractiveGame(
-            IEnumerable<string> words,
-            int boardCount,
-            int maxGuesses)
+            IEnumerable<string> words)
         {
             _words = words.ToList();
-            _boardCount = boardCount;
-            _maxGuesses = maxGuesses;
         }
 
-        public void PlayGame()
+        public GameDesc PromptGame()
         {
-            var options = new PossibleWords[_boardCount];
-            var openBoards = _boardCount;
-            for (var i = 0; i < _boardCount; i++)
+            Console.WriteLine("Welcome to dordle-solver. This program will help you solve multiboard Wordle puzzles,");
+            Console.WriteLine("like Dordle, Quordle, etc.");
+            var boardCount = PromptBoardCount();
+            var gameMap = GameDesc.GAME_MAP;
+
+            if (gameMap.ContainsKey(boardCount))
+            {
+                var desc = gameMap[boardCount];
+                Console.WriteLine($"I know that game. {desc.Name}. {desc.MaxMoves} moves allowed.");
+                return desc;
+            }
+            else
+            {
+                // TODO - allow arbitrary games
+                Console.WriteLine("I am not familiar with that game - sorry.");
+                throw new NotImplementedException();
+            }
+        }
+
+        public void PlayGame(GameDesc gameDesc)
+        {
+            var boardCount = gameDesc.BoardCount;
+            var maxGuesses = gameDesc.MaxMoves;
+
+            Console.WriteLine("To use, guess what this program suggests. Then, let this program know the result.");
+            Console.WriteLine("Enter the five colors from the result. G for green, Y for yellow, and X for gray.");
+            Console.WriteLine("You will be prompted for each board separately. Once a board is solved, the program");
+            Console.WriteLine("will stop asking about it.");
+
+            var options = new PossibleWords[boardCount];
+            var openBoards = boardCount;
+            for (var i = 0; i < boardCount; i++)
                 options[i] = new PossibleWords(_words);
 
-            for (int i = 0; i < _maxGuesses; i++)
+            for (int i = 0; i < maxGuesses; i++)
             {
                 var maxOptions = -1;
                 var bestGuess = -1;
-                for (var x = 0; x < _boardCount; x++)
+                for (var x = 0; x < boardCount; x++)
                 {
                     if (options[x] == null)
                         continue;
@@ -50,7 +73,7 @@ namespace dordle_solver
                 }
                 var currGuess = options[bestGuess].BestGuess();
                 Console.WriteLine($"Please guess: {currGuess}");
-                for (var x = 0; x < _boardCount; x++)
+                for (var x = 0; x < boardCount; x++)
                 {
                     if (options[x] == null)
                         continue;
@@ -73,6 +96,18 @@ namespace dordle_solver
                 }
             }
             Console.WriteLine("Looks like you ran out of guesses. My fault.");
+        }
+
+        private static int PromptBoardCount()
+        {
+            while (true)
+            {
+                Console.Write("How many different boards does your game have? ");
+                var result = Console.ReadLine();
+                if (int.TryParse(result, out int count) && count > 0)
+                    return count;
+                Console.WriteLine("I'm expecting a positive number, like 2, 4, 8, etc.");
+            }
         }
 
         private static string PromptResult(int boardNum)
