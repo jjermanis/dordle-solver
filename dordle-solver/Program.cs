@@ -20,8 +20,8 @@ namespace dordle_solver
             switch (arg)
             {
                 case TEST_ARG:
-                    // TODO - implement
-                    throw new NotImplementedException();
+                    new TestGame(words).RunTest();
+                    break;
 
                 case INTERACTIVE_ARG:
                 default:
