@@ -35,6 +35,9 @@ namespace dordle_solver
             }
         }
 
+        private IWordChooser CreateWordChooser()
+            => new PossibleWords(_words);
+
         public void PlayGame(GameDesc gameDesc)
         {
             var boardCount = gameDesc.BoardCount;
@@ -45,10 +48,10 @@ namespace dordle_solver
             Console.WriteLine("You will be prompted for each board separately. Once a board is solved, the program");
             Console.WriteLine("will stop asking about it.");
 
-            var options = new PossibleWords[boardCount];
+            var options = new IWordChooser[boardCount];
             var openBoards = boardCount;
             for (var i = 0; i < boardCount; i++)
-                options[i] = new PossibleWords(_words);
+                options[i] = CreateWordChooser();
 
             for (int i = 0; i < maxGuesses; i++)
             {
@@ -86,7 +89,7 @@ namespace dordle_solver
                     }
                     else
                     {
-                        options[x].AddClue(currGuess, result);
+                        options[x].UpdateAfterGuess(currGuess, result);
                     }
                 }
                 if (openBoards == 0)

@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace dordle_solver
 {
-    public class PossibleWords
+    public class PossibleWords : IWordChooser
     {
         private static readonly HashSet<char> VALID_RESULT_CHARS = new HashSet<char> { 'G', 'Y', 'X' };
         private readonly LetterDistribution _dist;
@@ -46,7 +46,7 @@ namespace dordle_solver
             return true;
         }
 
-        public void AddClue(string guess, string result)
+        public void UpdateAfterGuess(string guess, string result)
         {
             var newList = new List<string>();
             foreach (var word in _options)

@@ -51,15 +51,18 @@ namespace dordle_solver
             Console.WriteLine($"Time: {Environment.TickCount - start} ms");
         }
 
+        private IWordChooser CreateWordChooser()
+            => new PossibleWords(_allWords);
+
         public int? PlayGame(
             IList<string> words,
             int boardCount,
             int guessCount)
         {
             var openBoardCount = words.Count;
-            var options = new PossibleWords[boardCount];
+            var options = new IWordChooser[boardCount];
             for (var i = 0; i < boardCount; i++)
-                options[i] = new PossibleWords(_allWords);
+                options[i] = CreateWordChooser();
 
             for (int i = 0; i < guessCount; i++)
             {
@@ -73,7 +76,7 @@ namespace dordle_solver
                         options[b] = null;
                     }
                     if (options[b] != null)
-                        options[b].AddClue(currGuess, result);
+                        options[b].UpdateAfterGuess(currGuess, result);
                 }
                 if (openBoardCount == 0)
                     return i + 1;

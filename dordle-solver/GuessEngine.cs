@@ -2,17 +2,17 @@
 {
     internal class GuessEngine
     {
-        public static string BestGuess(PossibleWords[] possibleWords)
+        public static string BestGuess(IWordChooser[] wordChooser)
         {
             var maxOptions = -1;
             var bestGuess = -1;
 
-            for (var x = 0; x < possibleWords.Length; x++)
+            for (var x = 0; x < wordChooser.Length; x++)
             {
-                if (possibleWords[x] == null)
+                if (wordChooser[x] == null)
                     continue;
 
-                var count = possibleWords[x].OptionCount();
+                var count = wordChooser[x].OptionCount();
                 if (count == 1)
                 {
                     bestGuess = x;
@@ -24,7 +24,7 @@
                     bestGuess = x;
                 }
             }
-            return possibleWords[bestGuess].BestGuess();
+            return wordChooser[bestGuess].BestGuess();
         }
     }
 }

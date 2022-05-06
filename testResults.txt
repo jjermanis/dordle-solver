@@ -1,0 +1,49 @@
+5/6/2022
+
+Running test: 1000 games, 2 boards
+1: 0
+2: 0
+3: 3
+4: 86
+5: 254
+6: 265
+7: 208
+Misses: 184
+Win Rate: 81.600%
+Average: 5.722
+Score: 7.977
+Time: 10094 ms
+Running test: 500 games, 4 boards
+1: 0
+2: 0
+3: 0
+4: 0
+5: 0
+6: 16
+7: 74
+8: 136
+9: 134
+Misses: 140
+Win Rate: 72.000%
+Average: 8.078
+Score: 11.967
+Time: 10109 ms
+Running test: 250 games, 8 boards
+1: 0
+2: 0
+3: 0
+4: 0
+5: 0
+6: 0
+7: 0
+8: 0
+9: 0
+10: 7
+11: 42
+12: 74
+13: 67
+Misses: 60
+Win Rate: 76.000%
+Average: 12.058
+Score: 15.216
+Time: 10172 ms
