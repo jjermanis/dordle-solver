@@ -51,8 +51,9 @@ namespace dordle_solver
             Console.WriteLine($"Time: {Environment.TickCount - start} ms");
         }
 
-        private IWordChooser CreateWordChooser()
-            => new PossibleWords(_allWords);
+        private IWordChooser CreateWordChooser(int guessCount)
+            // => new PossibleWords(_allWords);
+            => new MinimizeExpectedRemainingCasesChooser(_allWords, guessCount, false);
 
         public int? PlayGame(
             IList<string> words,
@@ -62,7 +63,7 @@ namespace dordle_solver
             var openBoardCount = words.Count;
             var options = new IWordChooser[boardCount];
             for (var i = 0; i < boardCount; i++)
-                options[i] = CreateWordChooser();
+                options[i] = CreateWordChooser(guessCount);
 
             for (int i = 0; i < guessCount; i++)
             {

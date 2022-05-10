@@ -35,8 +35,9 @@ namespace dordle_solver
             }
         }
 
-        private IWordChooser CreateWordChooser()
-            => new PossibleWords(_words);
+        private IWordChooser CreateWordChooser(int guessCount)
+            // => new PossibleWords(_allWords);
+            => new MinimizeExpectedRemainingCasesChooser(_words, guessCount, false);
 
         public void PlayGame(GameDesc gameDesc)
         {
@@ -51,7 +52,7 @@ namespace dordle_solver
             var options = new IWordChooser[boardCount];
             var openBoards = boardCount;
             for (var i = 0; i < boardCount; i++)
-                options[i] = CreateWordChooser();
+                options[i] = CreateWordChooser(maxGuesses);
 
             for (int i = 0; i < maxGuesses; i++)
             {
