@@ -11,6 +11,7 @@ namespace dordle_solver
             { 2, new GameDesc { BoardCount = 2, MaxMoves = 7, Name = "Dordle"} },
             { 4, new GameDesc { BoardCount = 4, MaxMoves = 9, Name = "Quordle"} },
             { 8, new GameDesc { BoardCount = 8, MaxMoves = 13, Name = "Octordle"} },
+            { 16, new GameDesc { BoardCount = 16, MaxMoves = 21, Name = "Sedecordle"} },
         };
 
         public int BoardCount { get; set; }
